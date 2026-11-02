@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MS Chat Messenger</title>
+<meta name="description" content="MS Chat - fast and secure messenger with Claud storage.">
+<meta name="theme-color" content="#0d0a14">
+<link rel="icon" type="image/png" href="/icon-512.png">
+<link rel="apple-touch-icon" href="/icon-512.png">
+<style>
+:root{--ac:#C54FDA;--bg:#fff;--tx:#000;--mut:#67696a;--bd:#e7e5ec;--pop:rgba(255,255,255,.92);--hd:rgba(255,255,255,.85)}
+[data-theme=dark]{--bg:#0d0a14;--tx:#fff;--mut:#a7a2b6;--bd:#2a2438;--pop:rgba(30,24,44,.94);--hd:rgba(13,10,20,.85)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:Roboto,-apple-system,'Segoe UI',Tahoma,Arial,sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;transition:background .3s,color .3s}
+a{color:inherit;text-decoration:none;cursor:pointer}button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+svg{width:1em;height:1em;fill:currentColor;flex:none}
+svg.s{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+[hidden]{display:none!important}
+header{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:6px;padding:0 14px;height:62px;background:var(--hd);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd)}
+nav{display:flex;height:100%}
+nav a{position:relative;display:flex;align-items:center;padding:0 14px;font-weight:500;font-size:17px;color:var(--ac)}
+nav a::after{content:"";position:absolute;left:8px;right:8px;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:var(--ac);transform:scaleX(0);transition:transform .45s cubic-bezier(.34,1.8,.5,1)}
+nav a.on::after{transform:scaleX(1)}
+.sp{flex:1}
+.lw{position:relative}
+#lb,#tg{display:flex;align-items:center;gap:6px;height:42px;padding:0 10px;border-radius:14px;color:var(--ac);font-weight:600;font-size:16px;transition:transform .3s cubic-bezier(.34,1.8,.5,1),background .2s}
+#lb svg,#tg svg{font-size:24px}#lb .cv{font-size:16px;transition:transform .4s cubic-bezier(.34,1.8,.5,1)}
+#lb:active,#tg:active{transform:scale(.9)}#lb:hover,#tg:hover{background:rgba(197,79,218,.1)}
+.lw.open .cv{transform:rotate(180deg)}
+#tg{color:var(--mut)}
+#lm{position:absolute;top:calc(100% + 8px);inset-inline-end:0;min-width:190px;list-style:none;padding:6px;border-radius:24px;background:var(--pop);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--bd);box-shadow:0 18px 44px rgba(0,0,0,.22);transform-origin:top right;transform:scale(.45,.2);opacity:0;pointer-events:none;transition:transform .55s cubic-bezier(.34,1.8,.5,1),opacity .18s}
+[dir=rtl] #lm{transform-origin:top left}
+.lw.open #lm{transform:scale(1);opacity:1;pointer-events:auto}
+#lm li{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 14px;border-radius:18px;cursor:pointer;font-size:16px;transition:transform .3s cubic-bezier(.34,1.8,.5,1),background .2s}
+#lm li:hover{background:rgba(197,79,218,.1)}#lm li:active{transform:scale(.93)}
+#lm li.on{background:rgba(197,79,218,.16);color:var(--ac);font-weight:700}#lm li:not(.on) svg{display:none}
+main{max-width:860px;margin:0 auto;padding:36px 20px 80px}
+section{animation:in .45s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.c{text-align:center}
+.logo{width:150px;height:150px;border-radius:50%;margin:20px auto 10px;display:block}
+h1{font-size:clamp(32px,7vw,54px);font-weight:700;line-height:1.15;margin:14px 0 10px}
+.tag{color:var(--mut);font-size:clamp(18px,4vw,24px)}
+.shot{display:block;width:100%;max-width:560px;margin:34px auto 18px}
+.lk{display:inline-flex;align-items:center;gap:12px;color:var(--ac);font-size:clamp(20px,4.5vw,28px);margin:4px 0 24px;transition:transform .35s cubic-bezier(.34,1.8,.5,1)}
+.lk svg{font-size:1.5em}.lk:active{transform:scale(.95)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 40px;min-width:min(100%,300px);border-radius:999px;background:var(--ac);color:#fff;font-size:19px;font-weight:600;transition:transform .35s cubic-bezier(.34,1.8,.5,1),filter .2s;margin:6px 0}
+.btn:hover{filter:brightness(1.08)}.btn:active{transform:scale(.95)}
+.btn svg{font-size:1.1em}.btn.soon{background:none;color:var(--ac);border:2px solid var(--ac);opacity:.6;pointer-events:none;font-size:16px;padding:12px 30px}
+.btn.busy{filter:saturate(.7)}
+h3.w{font-size:30px;font-weight:700;margin:64px 0 8px}
+.ft{margin:34px auto 0;max-width:520px}.ft h3{font-size:34px;font-weight:700;color:var(--ac);margin-bottom:6px}.ft p{font-size:17px}
+.l{text-align:start}
+.l h1{font-size:clamp(28px,6vw,40px);margin:0 0 22px}
+.l h4{font-size:22px;font-weight:700;margin:38px 0 10px}.l>p{font-size:19px;line-height:1.7}
+.it{display:flex;align-items:center;gap:16px;padding:13px 0;font-size:20px;color:var(--ac)}.it svg{font-size:34px}
+.it.dis{opacity:.55;pointer-events:none}.it small{font-size:12px;font-weight:700;letter-spacing:.6px;padding:3px 10px;border:1.5px solid var(--ac);border-radius:999px;margin-inline-start:auto}
+details{border-bottom:1px solid var(--bd)}summary{list-style:none;cursor:pointer;padding:18px 0;font-size:19px;font-weight:500;color:var(--ac);display:flex;justify-content:space-between;gap:14px}
+summary::-webkit-details-marker{display:none}summary::after{content:"+";font-size:26px;line-height:1;transition:transform .4s cubic-bezier(.34,1.8,.5,1)}
+details[open] summary::after{transform:rotate(45deg)}details p{padding:0 0 20px;color:var(--mut);font-size:17px;animation:in .35s ease}
+.intro{padding:18px 20px;border-radius:18px;background:rgba(197,79,218,.09);border-inline-start:4px solid var(--ac);margin-bottom:22px;font-size:17px}
+video{display:block;width:100%;max-width:420px;margin:20px auto;border-radius:22px;background:#000}
+@media(max-width:520px){nav a{padding:0 9px;font-size:16px}header{padding:0 8px;gap:2px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="i-android" viewBox="0 0 22 27" width="22" xmlns="http://www.w3.org/2000/svg"><path d="m19.35 11c.75 0 1.35.67 1.35 1.5v6c0 .83-.6 1.5-1.35 1.5s-1.35-.67-1.35-1.5v-6c0-.83.6-1.5 1.35-1.5zm-16.7 0c.75 0 1.35.67 1.35 1.5v6c0 .83-.6 1.5-1.35 1.5s-1.35-.67-1.35-1.5v-6c0-.83.6-1.5 1.35-1.5zm13.35 0c.55 0 1 .95 1 1.5v7c0 .83-.67 1.5-1.5 1.5h-.5v3c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5v-3h-2v3c0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5v-3h-.5c-.83 0-1.5-.67-1.5-1.5v-7c0-.55.45-1.5 1-1.5zm-.55-9.54c.28.2.37.57.2.87l-.03.06-1.2 1.68c1.56 1.02 2.58 3.2 2.58 5.05 0 .31-.31.73-1.13.72h-9.85c-.68-.24-1.02-.48-1.02-.72 0-1.84 1-4 2.54-5.02l-1.22-1.71c-.22-.3-.14-.72.16-.93.29-.19.68-.14.9.11l.04.06 1.32 1.85c.7-.26 1.46-.41 2.26-.41.78 0 1.52.14 2.2.39l1.31-1.83c.21-.3.63-.38.94-.17zm-6.9 4.54c-.46 0-.82.36-.82.8 0 .43.36.79.82.79.45 0 .81-.36.81-.79 0-.44-.36-.8-.81-.8zm4.9 0c-.45 0-.81.36-.81.8 0 .43.36.79.81.79.46 0 .82-.36.82-.79 0-.44-.36-.8-.82-.8z" fill="#C54FDA" fill-rule="evenodd"/></symbol>
+ <symbol id="i-apple" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg"><path d="m20.9905165 24.6543351c-1.157658 1.1054411-2.4349263.9331099-3.6523895.4119134-1.2943556-.5317046-2.4776443-.5653302-3.8446205 0-1.7023125.72295-2.6057984.5127901-3.63103049-.4119134-5.78828978-5.8634614-4.93392966-14.79525748 1.64464319-15.13151333 1.5955175.08406396 2.7125934.86796043 3.6523895.93311003 1.3968788-.2795127 2.7339524-1.08022196 4.2290826-.97514201 1.7962921.14290874 3.1397734.84063961 4.0368515 2.09529431-3.6951075 2.185663-2.8193884 6.9773089.5745572 8.3223323-.6792163 1.7548352-1.5506636 3.4886544-3.0116194 4.7706298zm-5.9591618-15.1945613c-.1730079-2.60598285 1.9735719-4.74961389 4.4426726-4.9597738.3396081 3.00528667-2.7766704 5.25399767-4.4426726 4.9597738z" fill="#C54FDA"/></symbol>
+ <symbol id="i-desktop" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg"><g fill="#C54FDA" fill-rule="evenodd"><rect height="2" rx="1" width="9" x="11" y="22"/><rect height="13" rx="2" width="19" x="6" y="8"/></symbol>
+ <symbol id="i-macos" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg"><path d="m23 8c1.1045695 0 2 .8954305 2 2v12h1c.5522847 0 1 .4477153 1 1s-.4477153 1-1 1h-21c-.55228475 0-1-.4477153-1-1s.44771525-1 1-1h1v-12c0-1.1045695.8954305-2 2-2zm-5.549515 5.1538625c-.6645023-.0450343-1.2587572.2981268-1.8795922.417918-.4176872-.0279213-.9141654-.3638769-1.6232843-.3999043-2.9238101.1441096-3.3035257 3.9720222-.7309525 6.4849342.4556587.3963016.857208.4863701 1.6137913.1765344.607545-.2422844 1.1334511-.2278734 1.7087203 0 .5410947.2233699 1.1087695.2972261 1.6232842-.1765344.6483644-.5431132 1.0356743-1.2861786 1.3375482-2.0382508-1.5084202-.5764386-1.8976287-2.6300011-.2553587-3.5667139-.3987014-.5377091-.9958042-.8367366-1.7941563-.8979832zm.5246127-2.7538625c-1.6541168.1264586-2.6030243.9505661-2.4871216 2.5186523 1.1160995.177042 2.7146342-.7102948 2.4871216-2.5186523z" fill="#C54FDA" fill-rule="evenodd"/></symbol>
+ <symbol id="i-web" viewBox='0 0 16 16'><path fill='#C54FDA' d='M8 0.4C12.2 0.4 15.6 3.8 15.6 8 15.6 12.2 12.2 15.6 8 15.6 3.8 15.6 0.4 12.2 0.4 8 0.4 3.8 3.8 0.4 8 0.4ZM9.63 11.1L6.37 11.1C6.73 13.07 7.4 14.4 8 14.4 8.6 14.4 9.27 13.07 9.63 11.1ZM5.14 11.1L2.4 11.1C3.19 12.52 4.51 13.61 6.09 14.11 5.71 13.41 5.41 12.5 5.21 11.45L5.14 11.1ZM13.6 11.1L10.86 11.1C10.65 12.3 10.33 13.33 9.92 14.11 11.4 13.64 12.66 12.65 13.46 11.35L13.6 11.1ZM4.99 6.1L1.89 6.1C1.7 6.7 1.6 7.34 1.6 8 1.6 8.66 1.7 9.3 1.89 9.9L4.99 9.9C4.94 9.44 4.92 8.97 4.91 8.49L4.9 8 4.9 7.71C4.91 7.16 4.94 6.62 4.99 6.1ZM9.8 6.1L6.2 6.1C6.14 6.7 6.1 7.34 6.1 8 6.1 8.66 6.14 9.3 6.2 9.9L9.8 9.9C9.86 9.3 9.9 8.66 9.9 8 9.9 7.34 9.86 6.7 9.8 6.1ZM14.11 6.1L11.01 6.1C11.07 6.71 11.1 7.34 11.1 8 11.1 8.66 11.07 9.29 11.01 9.9L14.11 9.9C14.3 9.3 14.4 8.66 14.4 8 14.4 7.34 14.3 6.7 14.11 6.1ZM6.08 1.89L6.02 1.91C4.47 2.42 3.18 3.5 2.4 4.9L5.14 4.9C5.33 3.82 5.6 2.87 5.96 2.13L6.08 1.89ZM8 1.6L7.93 1.61C7.35 1.71 6.72 3.01 6.37 4.9L9.63 4.9C9.28 3.01 8.66 1.71 8.08 1.61L8 1.6ZM9.91 1.89L9.97 2C10.36 2.76 10.66 3.76 10.86 4.9L13.6 4.9C12.86 3.56 11.65 2.52 10.19 1.98L9.91 1.89Z'/></symbol>
+ <symbol id="i-globe" viewBox="0 0 24 24" class="s"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.500 2.600 3.700 5.600 3.700 9s-1.200 6.400-3.700 9c-2.500-2.600-3.700-5.600-3.700-9S9.500 5.600 12 3z" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+ <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.200 3a7 7 0 009.800 9.800z"/></symbol>
+ <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1.500v3M12 19.500v3M4.600 4.600l2.100 2.100M17.300 17.300l2.100 2.100M1.500 12h3M19.500 12h3M4.600 19.400l2.100-2.100M17.300 6.700l2.100-2.100" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+ <symbol id="i-chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></symbol>
+ <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+ <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+ <symbol id="i-ok" viewBox="0 0 24 24"><path d="M5 12.500l4.500 4.500L19 7.500" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<header>
+ <nav>
+  <a href="/" data-go="/" data-t="/"><span data-i="home">Home</span></a>
+  <a href="/faq" data-go="/faq" data-t="/faq"><span data-i="faq">FAQ</span></a>
+  <a href="/apps" data-go="/apps" data-t="/apps"><span data-i="apps">Apps</span></a>
+ </nav>
+ <div class="sp"></div>
+ <div class="lw" id="lw">
+  <button id="lb" aria-haspopup="listbox" aria-label="Language"><svg><use href="#i-globe"/></svg><span id="lc">EN</span><svg class="cv"><use href="#i-chev"/></svg></button>
+  <ul id="lm" role="listbox"></ul>
+ </div>
+ <button id="tg" aria-label="Theme"><svg><use id="tu" href="#i-moon"/></svg></button>
+</header>
+
+<main>
+ <!-- HOME -->
+ <section data-r="/" class="c">
+  <img class="logo" src="/t-icon.svg" alt="MS Chat">
+  <h1>MS Chat</h1>
+  <p class="tag" data-i="tag">a new era of messaging</p>
+  <img class="shot" src="/android-main.png" alt="MS Chat on Android">
+  <a class="lk" href="/android" data-go="/android"><svg><use href="#i-android"/></svg><span data-i="forA">MS Chat for <b>Android</b></span></a>
+  <img class="shot" src="/desktop.png" alt="MS Chat on desktop">
+  <div><a class="lk" href="/desktop" data-go="/desktop"><span data-i="forD">MS Chat for <b>Windows / Mac / Linux</b></span></a></div>
+  <a class="btn" href="/apps" data-go="/apps"><span data-i="browse">Browse more MS Chat apps</span><svg class="s"><use href="#i-next"/></svg></a>
+  <h3 class="w" data-i="why">Why MS Chat?</h3>
+  <div class="ft"><h3 data-i="f1">Simple</h3><p data-i="d1"></p></div>
+  <div class="ft"><h3 data-i="f2">Private</h3><p data-i="d2"></p></div>
+  <div class="ft"><h3 data-i="f3">Synced</h3><p data-i="d3"></p></div>
+  <div class="ft"><h3 data-i="f4">Fast</h3><p data-i="d4"></p></div>
+  <div class="ft"><h3 data-i="f5">Powerful</h3><p data-i="d5"></p></div>
+  <div class="ft"><h3 data-i="f6">Open</h3><p data-i="d6"></p></div>
+  <div class="ft"><h3 data-i="f7">Secure</h3><p data-i="d7"></p></div>
+ </section>
+
+ <!-- FAQ -->
+ <section data-r="/faq" class="l" hidden>
+  <div class="intro">This FAQ answers the basic questions about MS Chat.</div>
+  <details><summary>What is MS Chat?</summary><p>MS Chat is a fast and secure messenger with its own cloud storage. You chat with people by username, no phone number needed.</p></details>
+  <details><summary>Do I need a phone number?</summary><p>No. You sign up and log in with just an email. Your email is never shown to other people.</p></details>
+  <details><summary>How do I create an account?</summary><p>Open MS Chat and tap Create new account. Enter your name, your email and, if you like, a username. Then tap Create account and your account is ready.</p></details>
+  <details><summary>How do I log in?</summary><p>On the login page choose Login with email or Login with QR.</p></details>
+  <details><summary>How do I log in with email?</summary><p>Choose Login with email, enter your email and tap Send code. A one-time code (OTP) appears on a device where you are already logged in. Enter it and tap Continue, then type your two-step verification password and tap Login. If two-step verification is off, you are logged in right away.</p></details>
+  <details><summary>How do I log in with QR?</summary><p>Choose Login with QR. On a device that is already logged in, open MS Chat, go to Settings &gt; Privacy and Security &gt; Devices &gt; Add Device and scan the code. If you use two-step verification, enter it. Otherwise you are logged in directly.</p></details>
+  <details><summary>How do I set a profile photo?</summary><p>Go to My Profile &gt; Set Photo and select a picture.</p></details>
+  <details><summary>How do I change my name, username, bio, birthday or email?</summary><p>Go to Settings &gt; Account. There you can set or change your name, username, bio, date of birth and email. Tap Done when you finish.</p></details>
+  <details><summary>How do I secure my account?</summary><p>Open Settings &gt; Privacy and Security. You can set up two-step verification and a passkey, change your email, manage blocked users and devices, choose who sees your last seen, and more.</p></details>
+  <details><summary>What can I send in a chat?</summary><p>Text, emojis in Telegram / Apple style, voice messages, photos, videos, audio and files. You can send and receive all media.</p></details>
+  <details><summary>Can I use more than one account?</summary><p>Yes. You can use up to 5 accounts at the same time.</p></details>
+  <details><summary>Can I customize the app?</summary><p>Yes. Switch between light and dark themes, set animations the way you like, make message text bigger or smaller, and change the chat wallpaper. There are 5 built-in wallpapers, and you can use a picture from your gallery or a link.</p></details>
+  <details><summary>Do I get notifications in the background?</summary><p>Yes. MS Chat sends notifications even when the app is closed.</p></details>
+  <details><summary>What is MS Chat cloud storage?</summary><p>MS Chat has its own cloud storage, so your chats and media stay available on all your devices.</p></details>
+ </section>
+
+ <!-- APPS -->
+ <section data-r="/apps" class="l" hidden>
+  <h1 data-i="appsH">MS Chat Applications</h1>
+  <p data-i="appsP">MS Chat apps are <strong>open source</strong> and Private</p>
+  <h4 data-i="mob">Mobile apps</h4>
+  <a class="it" href="/android" data-go="/android"><svg><use href="#i-android"/></svg><span data-i="aA">MS Chat for Android</span></a>
+  <div class="it dis" aria-disabled="true"><svg><use href="#i-apple"/></svg><span data-i="aI">MS Chat for iPhone and iPad</span><small data-i="soon">COMING SOON</small></div>
+  <h4 data-i="dsk">Desktop apps</h4>
+  <a class="it" href="/desktop" data-go="/desktop"><svg><use href="#i-desktop"/></svg><span data-i="aW">MS Chat for Windows</span></a>
+  <div class="it dis" aria-disabled="true"><svg><use href="#i-macos"/></svg><span data-i="aM">MS Chat for macOS</span><small data-i="soon">COMING SOON</small></div>
+  <h4 data-i="web">Web apps</h4>
+  <a class="it" href="https://ms-chat-messenger.vercel.app/" target="_blank" rel="noopener"><svg><use href="#i-web"/></svg><span data-i="aWeb">MS Chat for Web</span></a>
+ </section>
+
+ <!-- ANDROID -->
+ <section data-r="/android" class="c" hidden>
+  <img class="shot" src="/android-main.png" alt="MS Chat for Android">
+  <h1 data-i="andH">MS Chat for Android</h1>
+  <p class="tag" style="color:var(--tx);font-size:20px" data-i="andP">You can download MS Chat for your <b>Android</b> device here.</p>
+  <p style="margin-top:26px"><button class="btn" data-dl="android"><svg class="s"><use href="#i-dl"/></svg><span data-i="dl">Download MS Chat</span></button></p>
+  <h1 style="margin-top:64px;font-size:clamp(26px,5.5vw,36px)" data-i="how">How to Install MS Chat?</h1>
+  <p class="tag" style="color:var(--tx);font-size:19px" data-i="howP">This video shows how to install MS Chat on your <b>Android</b> device.</p>
+  <video id="vid" src="/android.mp4" autoplay muted loop playsinline controls preload="metadata"></video>
+ </section>
+
+ <!-- DESKTOP -->
+ <section data-r="/desktop" class="c" hidden>
+  <img class="shot" src="/desktop.png" alt="MS Chat Desktop">
+  <h1 data-i="dtH">MS Chat Desktop</h1>
+  <p class="tag" data-i="dtP">Fast and secure desktop app, perfectly synced with your mobile phone.</p>
+  <p style="margin-top:26px"><button class="btn" data-dl="windows"><svg class="s"><use href="#i-dl"/></svg><span data-i="dl">Download MS Chat</span></button></p>
+  <p><span class="btn soon"><svg><use href="#i-macos"/></svg>macOS · <span data-i="soon">COMING SOON</span></span></p>
+  <p><span class="btn soon"><svg><use href="#i-desktop"/></svg>Linux · <span data-i="soon">COMING SOON</span></span></p>
+ </section>
+</main>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+/* ---- put your real download links here ---- */
+const DL={android:{url:'/downloads/ms-chat.apk',name:'MS-Chat.apk'},windows:{url:'/downloads/MS-Chat-Setup.exe',name:'MS-Chat-Setup.exe'}};
+const LANGS=[['en','English','EN'],['ur','اردو','UR'],['ar','العربية','AR'],['fa','فارسی','FA'],['hi','हिन्दी','HI']],RTL=['ur','ar','fa'];
+const T={
+en:{home:'Home',faq:'FAQ',apps:'Apps',tag:'a new era of messaging',forA:'MS Chat for <b>Android</b>',forD:'MS Chat for <b>Windows / Mac / Linux</b>',browse:'Browse more MS Chat apps',why:'Why MS Chat?',
+f1:'Simple',d1:'<b>MS Chat</b> is so simple you already know how to use it.',f2:'Private',d2:'<b>MS Chat</b> messages are heavily encrypted and can self-destruct.',f3:'Synced',d3:'<b>MS Chat</b> lets you access your chats from multiple devices.',f4:'Fast',d4:'<b>MS Chat</b> delivers messages faster than any other applications.',f5:'Powerful',d5:'<b>MS Chat</b> has no limits on size of your messages.',f6:'Open',d6:'<b>MS Chat</b> has an open source code free for everyone.',f7:'Secure',d7:'<b>MS Chat</b> keeps your messages safe from hacker attacks.',
+dl:'Download MS Chat',dling:'Downloading…',soon:'COMING SOON',appsH:'MS Chat Applications',appsP:'MS Chat apps are <strong>open source</strong> and Private',mob:'Mobile apps',dsk:'Desktop apps',web:'Web apps',aA:'MS Chat for Android',aI:'MS Chat for iPhone and iPad',aW:'MS Chat for Windows',aM:'MS Chat for macOS',aWeb:'MS Chat for Web',andH:'MS Chat for Android',andP:'You can download MS Chat for your <b>Android</b> device here.',how:'How to Install MS Chat?',howP:'This video shows how to install MS Chat on your <b>Android</b> device.',dtH:'MS Chat Desktop',dtP:'Fast and secure desktop app, perfectly synced with your mobile phone.'},
+ur:{home:'ہوم',faq:'عمومی سوالات',apps:'ایپس',tag:'پیغام رسانی کا نیا دور',forA:'MS Chat برائے <b>Android</b>',forD:'MS Chat برائے <b>Windows / Mac / Linux</b>',browse:'MS Chat کی مزید ایپس دیکھیں',why:'MS Chat ہی کیوں؟',
+f1:'آسان',d1:'<b>MS Chat</b> اتنا آسان ہے کہ آپ کو اسے استعمال کرنا پہلے سے آتا ہے۔',f2:'نجی',d2:'<b>MS Chat</b> کے پیغامات مضبوطی سے انکرپٹڈ ہیں اور خود بخود ختم بھی ہو سکتے ہیں۔',f3:'ہم آہنگ',d3:'<b>MS Chat</b> آپ کو کئی ڈیوائسز سے اپنی چیٹس تک رسائی دیتا ہے۔',f4:'تیز',d4:'<b>MS Chat</b> پیغامات کسی بھی دوسری ایپ سے زیادہ تیزی سے پہنچاتا ہے۔',f5:'طاقتور',d5:'<b>MS Chat</b> میں آپ کے پیغامات کے سائز پر کوئی حد نہیں۔',f6:'اوپن',d6:'<b>MS Chat</b> کا سورس کوڈ کھلا ہے اور سب کے لیے مفت ہے۔',f7:'محفوظ',d7:'<b>MS Chat</b> آپ کے پیغامات کو ہیکرز کے حملوں سے محفوظ رکھتا ہے۔',
+dl:'MS Chat ڈاؤن لوڈ کریں',dling:'ڈاؤن لوڈ ہو رہا ہے…',soon:'جلد آ رہا ہے'},
+ar:{home:'الرئيسية',faq:'الأسئلة الشائعة',apps:'التطبيقات',tag:'عصر جديد من المراسلة',forA:'MS Chat لـ <b>Android</b>',forD:'MS Chat لـ <b>Windows / Mac / Linux</b>',browse:'تصفّح المزيد من تطبيقات MS Chat',why:'لماذا MS Chat؟',
+f1:'بسيط',d1:'<b>MS Chat</b> بسيط لدرجة أنك تعرف كيف تستخدمه بالفعل.',f2:'خاص',d2:'رسائل <b>MS Chat</b> مشفّرة بقوة ويمكنها أن تُحذف ذاتيًا.',f3:'متزامن',d3:'<b>MS Chat</b> يتيح لك الوصول إلى محادثاتك من عدة أجهزة.',f4:'سريع',d4:'<b>MS Chat</b> يوصل الرسائل أسرع من أي تطبيق آخر.',f5:'قوي',d5:'<b>MS Chat</b> بلا حدود لحجم رسائلك.',f6:'مفتوح',d6:'<b>MS Chat</b> بكود مفتوح المصدر ومجاني للجميع.',f7:'آمن',d7:'<b>MS Chat</b> يحمي رسائلك من هجمات القراصنة.',
+dl:'تنزيل MS Chat',dling:'جارٍ التنزيل…',soon:'قريبًا'},
+fa:{home:'خانه',faq:'پرسش‌های متداول',apps:'برنامه‌ها',tag:'عصر تازه‌ای از پیام‌رسانی',forA:'MS Chat برای <b>Android</b>',forD:'MS Chat برای <b>Windows / Mac / Linux</b>',browse:'مشاهدهٔ برنامه‌های بیشتر MS Chat',why:'چرا MS Chat؟',
+f1:'ساده',d1:'<b>MS Chat</b> آن‌قدر ساده است که از قبل می‌دانید چطور از آن استفاده کنید.',f2:'خصوصی',d2:'پیام‌های <b>MS Chat</b> به‌شدت رمزگذاری می‌شوند و می‌توانند خودتخریب شوند.',f3:'همگام',d3:'<b>MS Chat</b> به شما امکان می‌دهد از چند دستگاه به گفتگوهایتان دسترسی داشته باشید.',f4:'سریع',d4:'<b>MS Chat</b> پیام‌ها را سریع‌تر از هر برنامهٔ دیگری می‌رساند.',f5:'قدرتمند',d5:'<b>MS Chat</b> محدودیتی برای حجم پیام‌های شما ندارد.',f6:'باز',d6:'<b>MS Chat</b> کد منبع باز دارد و برای همه رایگان است.',f7:'امن',d7:'<b>MS Chat</b> پیام‌های شما را از حملهٔ هکرها در امان نگه می‌دارد.',
+dl:'دانلود MS Chat',dling:'در حال دانلود…',soon:'به‌زودی'},
+hi:{home:'होम',faq:'सामान्य प्रश्न',apps:'ऐप्स',tag:'मैसेजिंग का नया दौर',forA:'<b>Android</b> के लिए MS Chat',forD:'<b>Windows / Mac / Linux</b> के लिए MS Chat',browse:'MS Chat के और ऐप्स देखें',why:'MS Chat क्यों?',
+f1:'सरल',d1:'<b>MS Chat</b> इतना सरल है कि आप इसे पहले से ही चलाना जानते हैं।',f2:'निजी',d2:'<b>MS Chat</b> के संदेश मज़बूती से एन्क्रिप्टेड हैं और खुद मिट भी सकते हैं।',f3:'सिंक',d3:'<b>MS Chat</b> आपको कई डिवाइस से अपनी चैट तक पहुँचने देता है।',f4:'तेज़',d4:'<b>MS Chat</b> संदेश किसी भी अन्य ऐप से तेज़ पहुँचाता है।',f5:'शक्तिशाली',d5:'<b>MS Chat</b> में आपके संदेशों के आकार की कोई सीमा नहीं है।',f6:'ओपन',d6:'<b>MS Chat</b> का सोर्स कोड खुला है और सबके लिए मुफ़्त है।',f7:'सुरक्षित',d7:'<b>MS Chat</b> आपके संदेशों को हैकर हमलों से सुरक्षित रखता है।',
+dl:'MS Chat डाउनलोड करें',dling:'डाउनलोड हो रहा है…',soon:'जल्द आ रहा है'}};
+
+/* ---- language ---- */
+const OK='<svg class="s" width="18" height="18"><use href="#i-ok"/></svg>';
+$('#lm').innerHTML=LANGS.map(l=>`<li role="option" data-l="${l[0]}"><span>${l[1]}</span>${OK}</li>`).join('');
+function setLang(l){localStorage.ms_lang=l;const h=document.documentElement;h.lang=l;h.dir=RTL.includes(l)?'rtl':'ltr';
+ $$('[data-i]').forEach(e=>{const v=T[l][e.dataset.i]??T.en[e.dataset.i];if(v!=null)e.innerHTML=v});
+ $('#lc').textContent=LANGS.find(x=>x[0]===l)[2];$$('#lm li').forEach(li=>li.classList.toggle('on',li.dataset.l===l))}
+$('#lb').onclick=e=>{e.stopPropagation();$('#lw').classList.toggle('open')};
+$('#lm').onclick=e=>{const li=e.target.closest('li');if(li){setLang(li.dataset.l);$('#lw').classList.remove('open')}};
+document.addEventListener('click',e=>{if(!e.target.closest('#lw'))$('#lw').classList.remove('open')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#lw').classList.remove('open')});
+
+/* ---- theme ---- */
+function setTheme(t){document.documentElement.dataset.theme=t;localStorage.ms_theme=t;$('#tu').setAttribute('href',t==='dark'?'#i-sun':'#i-moon');$('meta[name=theme-color]').content='#0d0a14'}
+$('#tg').onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+
+/* ---- pages ---- */
+const NAMES={'/':'','/faq':'FAQ · ','/apps':'Apps · ','/android':'Android · ','/desktop':'Desktop · '};
+function go(p,push=true){if(!(p in NAMES))p='/';if(push)history.pushState(null,'',p);
+ $$('main>section').forEach(s=>s.hidden=s.dataset.r!==p);
+ $$('nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===p||(a.dataset.t==='/apps'&&(p==='/android'||p==='/desktop'))));
+ document.title=NAMES[p]+'MS Chat Messenger';scrollTo(0,0);const v=$('#vid');p==='/android'?v.play().catch(()=>{}):v.pause()}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-go]');if(a&&!e.metaKey&&!e.ctrlKey){e.preventDefault();go(a.dataset.go)}});
+addEventListener('popstate',()=>go(location.pathname.replace(/\/$/,'')||'/',false));
+
+/* ---- background download (no page navigation) ---- */
+$$('[data-dl]').forEach(b=>b.onclick=()=>{const d=DL[b.dataset.dl],a=document.createElement('a');
+ a.href=d.url;a.download=d.name;a.rel='noopener';a.style.display='none';document.body.appendChild(a);a.click();a.remove();
+ const s=b.querySelector('span');if(b.busy)return;b.busy=1;b.classList.add('busy');s.textContent=T[localStorage.ms_lang||'en'].dling||T.en.dling;
+ setTimeout(()=>{b.busy=0;b.classList.remove('busy');setLang(localStorage.ms_lang||'en')},3500)});
+
+setTheme(localStorage.ms_theme||'light');setLang(localStorage.ms_lang||'en');go(location.pathname.replace(/\/$/,'')||'/',false);
+</script>
+</body>
+</html>
